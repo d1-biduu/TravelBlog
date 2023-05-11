@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "707178950810",
+    "project_id": "bidishatravel1",
+    "storage_bucket": "bidishatravel1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707178950810:android:e480a638d33b6ebc7daf23",
+        "android_client_info": {
+          "package_name": "com.travelblog.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "707178950810-iisc795u22n54caj6h6b9u64072s6sqf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrS0VUTX7MKrF6nrbLmnlSH1tjevlr5bE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "707178950810-iisc795u22n54caj6h6b9u64072s6sqf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "707178950810-r0jju2fcoha1ja5ugpj4hu9d1l0gvo87.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.travelblog"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
