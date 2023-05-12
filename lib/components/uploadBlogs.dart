@@ -5,12 +5,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:travelblog/Screen/blogdisplay.dart';
 import 'package:travelblog/Screen/description.dart';
 
 import '../widgets/button.dart';
 
 class UploadBlogs extends StatefulWidget {
-  const UploadBlogs({super.key});
+  UploadBlogs({super.key});
 
   @override
   State<UploadBlogs> createState() => _UploadBlogsState();
@@ -19,11 +20,39 @@ class UploadBlogs extends StatefulWidget {
 class _UploadBlogsState extends State<UploadBlogs> {
   File? _image;
   String imagePath = "";
-  String? extension;
-  bool isImageUploaded = false;
+  var downloadURL;
   final storageRef = FirebaseStorage.instance.ref();
+
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+
+  uploadImage() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    setState(() async {
+      if (pickedImage != null) {
+        _image = File(pickedImage.path);
+        var fileName =
+            DateTime.now().millisecondsSinceEpoch.toString() + '.jpg';
+        var data =
+            await storageRef.child('images/assets/$fileName').putFile(_image!);
+        print('data is $data');
+
+        setState(() {
+          storageRef
+              .child('images/assets/$fileName')
+              .getDownloadURL()
+              .then(((value) {
+            downloadURL = value;
+            print('Value is $value');
+          }));
+        });
+      } else {
+        print("image is not selected");
+      }
+    });
+  }
+
   final _formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -50,21 +79,7 @@ class _UploadBlogsState extends State<UploadBlogs> {
               ),
               InkWell(
                 onTap: () async {
-                  final pickedImage = await ImagePicker()
-                      .pickImage(source: ImageSource.gallery);
-                  setState(() {
-                    if (pickedImage != null) {
-                      _image = File(pickedImage.path);
-                      var data =
-                          storageRef.child('images/assets').putFile(_image!);
-                      data.whenComplete(() async {
-                        var downloadURL = await storageRef.getDownloadURL();
-                        print('Download URL: $downloadURL');
-                      });
-                    } else {
-                      print("image is not selected");
-                    }
-                  });
+                  uploadImage();
                 },
                 child: SizedBox(
                     height: MediaQuery.of(context).size.height * 0.2,
@@ -167,9 +182,11 @@ class _UploadBlogsState extends State<UploadBlogs> {
                             ),
                             onPressed: () async {
                               if (_formkey.currentState!.validate()) {
+                                print('Download is $downloadURL');
                                 var data = {
                                   'title': titleController.text,
                                   'description': descriptionController.text,
+                                  'imageurl': downloadURL,
                                 };
                                 await FirebaseFirestore.instance
                                     .collection('users')
@@ -187,7 +204,7 @@ class _UploadBlogsState extends State<UploadBlogs> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const Display()));
+                                              DisplayBlogs()));
                                 });
                               }
                             },

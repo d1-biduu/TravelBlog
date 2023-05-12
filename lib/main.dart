@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travelblog/Screen/blogdisplay.dart';
 import 'package:travelblog/Screen/login.dart';
 import 'package:travelblog/Screen/welcome.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const UploadBlogs(),
+      home: UploadBlogs(),
     );
   }
 }
