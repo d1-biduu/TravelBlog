@@ -26,6 +26,18 @@ class _DisplayBlogsState extends State<DisplayBlogs> {
       isloading = false;
     });
   }
+  Future<void> deleteValueFromDatabase(String documentId, String imageURl) async{
+final collection = await FirebaseFirestore.instance.collection('users');
+collection 
+    .doc(
+documentId)
+    .delete() 
+    .then((_) => print('Deleted'));
+
+   await FirebaseStorage.instance.refFromURL(imageURl).delete();
+
+  } 
+  
 
 
 
@@ -33,6 +45,7 @@ class _DisplayBlogsState extends State<DisplayBlogs> {
   void initState() {
     super.initState();
     getValueFromDatabase();
+   
   }
 
   Widget build(BuildContext context) {
@@ -75,14 +88,20 @@ class _DisplayBlogsState extends State<DisplayBlogs> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    documents[index]['title'],
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w600,
-                                        letterSpacing: 1),
-                                  ),
+                                  Row(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Text(
+                                            documents[index]['title'],
+                                            style: const TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w600,
+                                                letterSpacing: 1),
+                                          ),
+                                      
+                                   
                                   const SizedBox(
                                     height: 10,
                                   ),
@@ -94,6 +113,20 @@ class _DisplayBlogsState extends State<DisplayBlogs> {
                                         fontWeight: FontWeight.w600,
                                         letterSpacing: 1),
                                   ),
+                                    ],
+                                      ),
+                                 const SizedBox(width: 80,),
+                                     
+                                       IconButton(onPressed: (){
+deleteValueFromDatabase(documents[index].id, documents[index]['imageurl']);
+setState(() {
+  documents.removeAt(index);
+});
+Navigator.push(context, MaterialPageRoute(builder: (context)=>DisplayBlogs()));
+                                  }, icon: const Icon(Icons.delete, color: Colors.red,)),
+                                   ],
+                                  ),
+                                 
                                   const SizedBox(
                                     height: 20,
                                   ),

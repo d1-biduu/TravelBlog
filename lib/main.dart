@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:travelblog/Screen/blogdisplay.dart';
-import 'package:travelblog/Screen/login.dart';
 import 'package:travelblog/Screen/welcome.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:travelblog/components/uploadBlogs.dart';
@@ -17,7 +16,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
